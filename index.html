@@ -108,6 +108,7 @@
 </audio>
 
     <script>
+        // 🔁 DÖNGÜ KONTROLÜ
         const state = localStorage.getItem("endingState");
 
         if (state === "ending") {
@@ -169,12 +170,6 @@
             once: true
         });
 
-        function meow() {
-            const sound = new Audio("sounds/meow.mp3");
-            sound.currentTime = 0;
-            sound.play();
-        }
-
         function startLove() {
             introBox.classList.add("melt");
             setTimeout(() => {
@@ -199,12 +194,11 @@
             resultBox.style.display = "block";
             resultBox.innerHTML = `
     <p>${text}</p>
-    <img class="cat"
-         src="https://media.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif"
-         onclick="meow()"
-         style="cursor:pointer;">
+    <img class="cat" src="https://media.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif">
     <p><b>Sufle 🐈‍⬛</b></p>
-    <div class="box">🔁 Şimdi sayfayı yenile</div>
+    <div class="box">
+      🔁 Şimdi sayfayı yenile
+    </div>
   `;
             localStorage.setItem("endingState", "ending");
         }
