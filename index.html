@@ -3,226 +3,192 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Dolunay 💖 Sufle</title>
+    <title>Sufle & Dolunay 💗</title>
 
     <style>
-        /* ===== TEMA ===== */
-        
-        :root {
-            --day-bg: url("https://media.giphy.com/media/3o6ZtnFZ9M7E6D0nNS/giphy.gif");
-            --night-bg: #0b0014;
-            --overlay-day: rgba(255, 205, 225, .65);
-            --overlay-night: rgba(20, 10, 35, .75);
-            --box-bg-day: rgba(255, 255, 255, .94);
-            --box-bg-night: rgba(25, 15, 40, .94);
-            --text-day: #5a2a4a;
-            --text-night: #ffd6f0;
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif
         }
         
         body {
             margin: 0;
-            font-family: 'Comic Sans MS', cursive;
-            background: var(--day-bg) no-repeat center/cover fixed;
-            color: var(--text-day);
-            transition: .8s;
-            text-align: center;
-        }
-        
-        body.night {
-            background: var(--night-bg);
-            color: var(--text-night);
-        }
-        
-        .overlay {
-            position: fixed;
-            inset: 0;
-            background: var(--overlay-day);
-            backdrop-filter: blur(2px);
-            z-index: -1;
-            transition: .8s;
-        }
-        
-        body.night .overlay {
-            background: var(--overlay-night);
-        }
-        /* ===== YERLEŞİM ===== */
-        
-        .fullscreen {
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-direction: column;
-            padding-top: 170px;
+            background: url("https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e") center/cover no-repeat;
+            transition: 1s;
         }
         
-        .box {
-            background: var(--box-bg-day);
-            padding: 45px;
-            border-radius: 32px;
-            max-width: 560px;
+        body.night {
+            background: url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee") center/cover no-repeat;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, .85);
+            padding: 30px;
+            border-radius: 25px;
+            text-align: center;
             width: 90%;
-            box-shadow: 0 20px 45px rgba(0, 0, 0, .25);
-            animation: fade 1s;
-            margin-bottom: 20px;
+            max-width: 420px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, .2);
         }
         
-        body.night .box {
-            background: var(--box-bg-night);
+        h1 {
+            margin-bottom: 10px
+        }
+        
+        .top-cat-box {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+        }
+        
+        .top-cat-box img {
+            width: 90px;
+            cursor: pointer;
+            transition: .3s;
+        }
+        
+        .top-cat-box img:hover {
+            transform: scale(1.1)
+        }
+        
+        #levelText {
+            margin-top: 5px;
+            font-weight: bold
+        }
+        
+        button {
+            margin-top: 15px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 20px;
+            background: #ff9fbf;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .reward {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 20px;
+            background: rgba(255, 182, 193, .9);
+            animation: fade 1s;
         }
         
         @keyframes fade {
             from {
                 opacity: 0;
-                transform: scale(.9);
+                transform: translateY(10px)
             }
             to {
-                opacity: 1;
+                opacity: 1
             }
         }
-        
-        button {
-            padding: 14px 32px;
-            border-radius: 40px;
-            border: none;
-            margin: 10px;
-            font-size: 18px;
-            cursor: pointer;
-            background: linear-gradient(135deg, #ff9eb8, #ffb6c1);
-            color: white;
-            transition: .25s;
-        }
-        
-        button:hover {
-            transform: scale(1.08);
-        }
-        /* ===== SUFLE OYUNU ===== */
-        
-        .top-cat-box {
-            position: fixed;
-            top: 25px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 10;
-        }
-        
-        .top-cat {
-            width: 130px;
-            cursor: pointer;
-        }
-        
-        .level {
-            margin-top: 6px;
-            font-size: 22px;
-            font-weight: bold;
-        }
-        /* ===== FİNAL ===== */
         
         .fireworks {
             position: fixed;
             inset: 0;
             pointer-events: none;
-            background: url("https://media.giphy.com/media/l3vR85PnGsBwu1PFK/giphy.gif") repeat;
-            opacity: .7;
+            background: url("https://media.giphy.com/media/5xtDarwlnNgxVN2oOZC/giphy.gif") repeat;
+            opacity: .45;
+            display: none;
         }
         
-        .ending {
-            font-size: 44px;
-            animation: glow 2s infinite alternate;
+        .final {
+            font-size: 28px;
+            animation: pulse 1.5s infinite;
         }
         
-        @keyframes glow {
-            from {
-                text-shadow: 0 0 10px #ffb6c1;
+        @keyframes pulse {
+            0%,
+            100% {
+                transform: scale(1)
             }
-            to {
-                text-shadow: 0 0 28px #fff;
+            50% {
+                transform: scale(1.1)
             }
         }
     </style>
 </head>
 
 <body>
-    <div class="overlay"></div>
 
-    <!-- 🐈‍⬛ SUFLE -->
+    <div class="fireworks" id="fireworks"></div>
+
     <div class="top-cat-box">
-        <img class="top-cat" src="https://media.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif" onclick="catClick()">
-        <div class="level" id="levelText">🐾 Sufle – Level 1</div>
+        <img src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" onclick="catClick()">
+        <div id="levelText">🐾 Sufle – Level 0</div>
     </div>
 
-    <audio id="meow" src="sounds/meow.mp3"></audio>
+    <div class="container" id="mainBox">
+        <h1>Dolunayı seviyor musun? 💗</h1>
+        <button onclick="startLetter()">Evet 😻</button>
+        <button onclick="startLetter()">Evet 💞</button>
+    </div>
+
+    <audio id="meow" src="https://www.myinstants.com/media/sounds/cat-meow.mp3"></audio>
 
     <script>
-        /* ===== SUFLE LEVEL ===== */
-        let level = Number(localStorage.getItem("sufleLevel")) || 1;
-        document.getElementById("levelText").innerText =
-            `🐾 Sufle – Level ${level}`;
+        let level = Number(localStorage.getItem("sufleLevel")) || 0;
+        document.getElementById("levelText").innerText = `🐾 Sufle – Level ${level}`;
 
         function catClick() {
             level++;
             localStorage.setItem("sufleLevel", level);
-            document.getElementById("levelText").innerText =
-                `🐾 Sufle – Level ${level}`;
+            document.getElementById("levelText").innerText = `🐾 Sufle – Level ${level}`;
+
             const m = document.getElementById("meow");
             m.currentTime = 0;
             m.play();
+
+            if (level === 5) showReward("🐾 Sufle seni çok seviyor gibi bakıyor 💗");
+            if (level === 10) showReward("🎁 Sürpriz! Bu hikâye artık gerçek 😻");
         }
 
-        /* ===== DÖNGÜ KONTROLÜ ===== */
-        if (localStorage.getItem("ending") === "true") {
-            showEnding();
-        } else {
-            showStory();
+        function showReward(text) {
+            const box = document.createElement("div");
+            box.className = "reward";
+            box.innerHTML = text;
+            document.querySelector(".top-cat-box").appendChild(box);
+            setTimeout(() => box.remove(), 5000);
         }
 
-        function showStory() {
-            document.body.innerHTML += `
-<div class="fullscreen" id="story">
+        const letterPages = [
+            "Dolunay…<br><br>Bu site bir sürpriz ama hislerim tamamen gerçek 💌",
+            "Gülüşün, varlığın…<br>Her şeyi daha yumuşak yapıyor.",
+            "Bu hikâye küçük başladı ama<br>kalbimde yeri çok büyük 💗"
+        ];
 
-  <div class="box">
-    <h2>💌 Aşk Mektubu</h2>
-    <p>
-      Dolunay…<br><br>
-      Bu site bir sürpriz ama<br>
-      hislerim tamamen gerçek.<br><br>
-      Gülüşün, sabrın, varlığın…<br>
-      İyi ki varsın 💗
-    </p>
-    <button onclick="showChoices()">Devam Et ✨</button>
-  </div>
+        let pageIndex = 0;
 
-  <div class="box" id="choices" style="display:none;">
-    <button onclick="finish()">💗 Böyle olacağını hissediyordum</button>
-    <button onclick="finish()">😄 Sadece flört sanmıştım</button>
-  </div>
-
-</div>
-`;
+        function startLetter() {
+            document.getElementById("mainBox").innerHTML =
+                `<div id="letter"></div>
+   <button onclick="nextPage()">Devam Et ✨</button>`;
         }
 
-        function showChoices() {
-            document.getElementById("choices").style.display = "block";
+        function nextPage() {
+            const letter = document.getElementById("letter");
+            letter.innerHTML = letterPages[pageIndex];
+            pageIndex++;
+
+            if (pageIndex === letterPages.length) {
+                setTimeout(showEnd, 800);
+            }
         }
 
-        function finish() {
-            document.getElementById("story").innerHTML += `
-    <div class="box">
-      🔁 Şimdi sayfayı yenile
-    </div>
-  `;
-            localStorage.setItem("ending", "true");
-        }
-
-        function showEnding() {
+        function showEnd() {
             document.body.classList.add("night");
-            document.body.innerHTML += `
-    <div class="fireworks"></div>
-    <div class="fullscreen">
-      <div class="ending">✨ Sonsuz Mutlu Son ✨</div>
-    </div>
-  `;
-            localStorage.removeItem("ending");
+            document.getElementById("fireworks").style.display = "block";
+            document.getElementById("mainBox").innerHTML =
+                `<div class="final">🌙 Sonsuz Mutlu Son ✨</div>
+   <button onclick="location.reload()">Sayfayı Yenile 🔁</button>`;
         }
     </script>
 
