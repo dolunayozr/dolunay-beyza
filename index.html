@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dolunay & Sufle 💗</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #ffb6d5, #ffe6f0);
+            color: #6b1c3a;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            transition: background 0.8s;
+        }
+        
+        body.night {
+            background: linear-gradient(135deg, #2b0f1f, #4a1740);
+            color: #ffd6e8;
+        }
+        
+        .page {
+            display: none;
+            text-align: center;
+            max-width: 800px;
+            padding: 40px;
+            animation: fade 1s;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+        }
+        
+        p {
+            font-size: 1.2em;
+            line-height: 1.7;
+        }
+        
+        button {
+            background: #ff5fa2;
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin: 10px;
+            transition: transform .2s, box-shadow .2s;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+        }
+        /* KEDİ */
+        
+        .cat-container {
+            margin: 30px 0;
+        }
+        
+        .cat-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .cat {
+            font-size: 5em;
+            cursor: pointer;
+            animation: walk 2.5s infinite alternate;
+            transition: transform 0.3s;
+        }
+        
+        .cat:hover {
+            transform: scale(1.2) rotate(-5deg);
+        }
+        
+        @keyframes walk {
+            from {
+                transform: translateX(-30px);
+            }
+            to {
+                transform: translateX(30px);
+            }
+        }
+        
+        .hidden {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: #ffffffcc;
+            border-radius: 20px;
+        }
+        
+        body.night .hidden {
+            background: #00000055;
+        }
+        /* KALPLER */
+        
+        .hearts {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            top: 0;
+            left: 0;
+        }
+        
+        .heart {
+            position: absolute;
+            font-size: 1.5em;
+            animation: float 4s ease-out forwards;
+        }
+        
+        @keyframes float {
+            from {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateY(-120px);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes fade {
+            from {
+                opacity: 0;
+                transform: scale(.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- GİRİŞ -->
+    <div class="page active" id="login">
+        <h1>💗 Dolunay’ı seviyor musun? 💗</h1>
+        <button onclick="enter()">Evet 💕</button>
+        <button onclick="enter()">Evet 😍</button>
+    </div>
+
+    <!-- ANA -->
+    <div class="page" id="main">
+        <h1>🥰 Doğru cevap</h1>
+
+        <p>
+            Senin gülüşün günün en güzel anı. Hayat sen varken daha yumuşak 💗
+        </p>
+
+        <div class="cat-container">
+            <div class="cat-name">🐈‍⬛ Sufle</div>
+            <div class="cat" onclick="meow()">🐈‍⬛</div>
+            <small>(Sufle’ye dokun 😼)</small>
+        </div>
+
+        <button onclick="loveReason()">Seni neden seviyorum? 💌</button>
+        <p id="reason"></p>
+
+        <button onclick="toggleNote()">Sana bir mesajım var 💭</button>
+        <div id="note" class="hidden">
+            <p>
+                Hayatıma girdiğin için teşekkür ederim. Sen varken her şey daha güzel 💗
+            </p>
+        </div>
+
+        <button onclick="toggleNight()">🌙 Gece Modu</button>
+        <button onclick="toggleMusic()">🎵 Müzik</button>
+    </div>
+
+    <div class="hearts" id="hearts"></div>
+
+    <!-- SESLER -->
+    <audio id="music" loop>
+    <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_9c0e4a6d0b.mp3">
+</audio>
+
+    <audio id="meowSound">
+    <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_7f9b47c1bb.mp3">
+</audio>
+
+    <script>
+        const reasons = [
+            "Gülüşün yüzünden 💗",
+            "Sufle’yi sevme şeklin yüzünden 🐈‍⬛",
+            "Yanımdayken her şey kolaylaştığı için",
+            "Kalbin çok güzel olduğu için",
+            "Dolunay gibi parladığın için 🌙"
+        ];
+
+        function enter() {
+            login.classList.remove("active");
+            main.classList.add("active");
+        }
+
+        function loveReason() {
+            reason.innerText = reasons[Math.floor(Math.random() * reasons.length)];
+        }
+
+        function toggleNote() {
+            note.classList.toggle("hidden");
+        }
+
+        function toggleNight() {
+            document.body.classList.toggle("night");
+        }
+
+        function toggleMusic() {
+            const m = document.getElementById("music");
+            m.paused ? m.play() : m.pause();
+        }
+
+        function meow() {
+            const sound = document.getElementById("meowSound");
+            sound.currentTime = 0;
+            sound.play();
+
+            for (let i = 0; i < 6; i++) {
+                const h = document.createElement("div");
+                h.className = "heart";
+                h.innerText = "💗";
+                h.style.left = (50 + Math.random() * 60 - 30) + "%";
+                h.style.top = "60%";
+                document.getElementById("hearts").appendChild(h);
+                setTimeout(() => h.remove(), 4000);
+            }
+        }
+    </script>
+
+</body>
+
+</html>
