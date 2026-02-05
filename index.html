@@ -3,192 +3,241 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Sufle & Dolunay 💗</title>
+    <title>Dolunay 💖 Beyza</title>
 
     <style>
-        * {
-            box-sizing: border-box;
-            font-family: 'Segoe UI', sans-serif
-        }
-        
         body {
             margin: 0;
-            min-height: 100vh;
+            font-family: 'Comic Sans MS', cursive;
+            color: #5a2a4a;
+            text-align: center;
+            overflow-x: hidden;
+            /* GÜNDÜZ PEMBE MANZARA */
+            background: url("https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3Z25kaGhmamFkN3N3aHIzYWJiazFzcTZ3eDN1OXljZzZkOW95dzB5eSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/JvDzcuVBUglS9EISo7/giphy.gif") no-repeat center center fixed;
+            background-size: cover;
+            transition: background 1s ease;
+        }
+        /* SOFT PEMBE KATMAN */
+        
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 200, 220, 0.55);
+            backdrop-filter: blur(2px);
+            z-index: -1;
+            transition: background 1s ease;
+        }
+        /* 🌙 GECE MODU */
+        
+        body.dark {
+            background: url("https://media.giphy.com/media/l0MYB8Ory7Hqefo9a/giphy.gif") no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+        }
+        
+        body.dark::before {
+            background: rgba(20, 0, 40, 0.65);
+        }
+        /* ORTA KUTU */
+        
+        #intro {
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: url("https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e") center/cover no-repeat;
-            transition: 1s;
         }
         
-        body.night {
-            background: url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee") center/cover no-repeat;
+        .intro-box {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 50px 40px;
+            border-radius: 30px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+            transition: all 1s ease;
+        }
+        /* ERİYEREK KAYBOLMA */
+        
+        .melt {
+            animation: meltAway 1s forwards;
         }
         
-        .container {
-            background: rgba(255, 255, 255, .85);
-            padding: 30px;
-            border-radius: 25px;
-            text-align: center;
-            width: 90%;
-            max-width: 420px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, .2);
+        @keyframes meltAway {
+            to {
+                opacity: 0;
+                transform: scale(0.8) translateY(120px);
+                filter: blur(12px);
+            }
         }
         
         h1 {
-            margin-bottom: 10px
-        }
-        
-        .top-cat-box {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-        }
-        
-        .top-cat-box img {
-            width: 90px;
-            cursor: pointer;
-            transition: .3s;
-        }
-        
-        .top-cat-box img:hover {
-            transform: scale(1.1)
-        }
-        
-        #levelText {
-            margin-top: 5px;
-            font-weight: bold
+            font-size: 32px;
+            margin-bottom: 30px;
         }
         
         button {
-            margin-top: 15px;
-            padding: 12px 20px;
+            padding: 15px 35px;
+            font-size: 20px;
+            border-radius: 40px;
             border: none;
-            border-radius: 20px;
-            background: #ff9fbf;
-            color: white;
             cursor: pointer;
-            font-size: 16px;
+            background: linear-gradient(135deg, #ff9eb8, #ffb6c1);
+            color: white;
+            margin: 10px;
+            transition: 0.25s;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
         }
         
-        .reward {
-            margin-top: 15px;
-            padding: 15px;
-            border-radius: 20px;
-            background: rgba(255, 182, 193, .9);
-            animation: fade 1s;
+        button:hover {
+            transform: scale(1.08);
         }
         
-        @keyframes fade {
-            from {
-                opacity: 0;
-                transform: translateY(10px)
-            }
-            to {
-                opacity: 1
-            }
-        }
-        
-        .fireworks {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            background: url("https://media.giphy.com/media/5xtDarwlnNgxVN2oOZC/giphy.gif") repeat;
-            opacity: .45;
+        #main {
             display: none;
+            padding-top: 40px;
         }
         
-        .final {
-            font-size: 28px;
-            animation: pulse 1.5s infinite;
+        .cat {
+            width: 200px;
+            cursor: pointer;
+            transition: 0.3s;
         }
         
-        @keyframes pulse {
-            0%,
-            100% {
-                transform: scale(1)
+        .cat:hover {
+            transform: scale(1.1) rotate(-5deg);
+        }
+        
+        .heart {
+            position: fixed;
+            font-size: 24px;
+            animation: floatUp 2s linear forwards;
+        }
+        
+        @keyframes floatUp {
+            to {
+                opacity: 0;
+                transform: translateY(-120px);
             }
-            50% {
-                transform: scale(1.1)
+        }
+        
+        .rain {
+            position: fixed;
+            top: -30px;
+            font-size: 24px;
+            animation: rain 4s linear infinite;
+        }
+        
+        @keyframes rain {
+            to {
+                transform: translateY(110vh);
             }
+        }
+        
+        .letter {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            margin: 30px auto;
+            padding: 30px;
+            max-width: 500px;
+            border-radius: 25px;
+        }
+        
+        .toggle {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            font-size: 22px;
         }
     </style>
 </head>
 
 <body>
 
-    <div class="fireworks" id="fireworks"></div>
+    <!-- SESLER -->
+    <audio id="music" loop muted autoplay>
+  <source src="sounds/music.mp3" type="audio/mpeg">
+</audio>
+    <audio id="meowSound">
+  <source src="sounds/meow.mp3" type="audio/mpeg">
+</audio>
 
-    <div class="top-cat-box">
-        <img src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" onclick="catClick()">
-        <div id="levelText">🐾 Sufle – Level 0</div>
+    <!-- GİRİŞ -->
+    <div id="intro">
+        <div class="intro-box" id="introBox">
+            <h1>Dolunay’ı seviyor musun? 💕</h1>
+            <button onclick="startLove()">💖 Evet 💖</button>
+            <button onclick="startLove()">🥰 Evet 🥰</button>
+        </div>
     </div>
 
-    <div class="container" id="mainBox">
-        <h1>Dolunayı seviyor musun? 💗</h1>
-        <button onclick="startLetter()">Evet 😻</button>
-        <button onclick="startLetter()">Evet 💞</button>
+    <!-- ANA -->
+    <div id="main">
+        <h1>💗 Hoş geldin aşkım 💗</h1>
+        <p id="timerMessage"></p>
+
+        <h2>🐈‍⬛ Sufle</h2>
+        <p>Seviye: <span id="level">0</span></p>
+        <img src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" class="cat" onclick="meow()">
+        <p>Adı: <b>Sufle</b> 🐾</p>
+
+        <button onclick="openLetter()">💌 Gizli Aşk Mektubu</button>
+        <div class="letter" id="letter">
+            Dolunay…<br><br> Yıldızlar geceyi güzelleştirir, sen benim hayatımı güzelleştiriyorsun, hayatıma girdiğinden beri çok renk kattın, iyiki tanışmışız o reelsi o gün atmışım sana ✨💖
+        </div>
     </div>
 
-    <audio id="meow" src="https://www.myinstants.com/media/sounds/cat-meow.mp3"></audio>
+    <button class="toggle" onclick="toggleDark()">🌙</button>
 
     <script>
-        let level = Number(localStorage.getItem("sufleLevel")) || 0;
-        document.getElementById("levelText").innerText = `🐾 Sufle – Level ${level}`;
+        let level = 0;
 
-        function catClick() {
-            level++;
-            localStorage.setItem("sufleLevel", level);
-            document.getElementById("levelText").innerText = `🐾 Sufle – Level ${level}`;
-
-            const m = document.getElementById("meow");
-            m.currentTime = 0;
-            m.play();
-
-            if (level === 5) showReward("🐾 Sufle seni çok seviyor gibi bakıyor 💗");
-            if (level === 10) showReward("🎁 Sürpriz! Bu hikâye artık gerçek 😻");
-        }
-
-        function showReward(text) {
-            const box = document.createElement("div");
-            box.className = "reward";
-            box.innerHTML = text;
-            document.querySelector(".top-cat-box").appendChild(box);
-            setTimeout(() => box.remove(), 5000);
-        }
-
-        const letterPages = [
-            "Dolunay…<br><br>Bu site bir sürpriz ama hislerim tamamen gerçek 💌",
-            "Gülüşün, varlığın…<br>Her şeyi daha yumuşak yapıyor.",
-            "Bu hikâye küçük başladı ama<br>kalbimde yeri çok büyük 💗"
-        ];
-
-        let pageIndex = 0;
-
-        function startLetter() {
-            document.getElementById("mainBox").innerHTML =
-                `<div id="letter"></div>
-   <button onclick="nextPage()">Devam Et ✨</button>`;
-        }
-
-        function nextPage() {
-            const letter = document.getElementById("letter");
-            letter.innerHTML = letterPages[pageIndex];
-            pageIndex++;
-
-            if (pageIndex === letterPages.length) {
-                setTimeout(showEnd, 800);
+        // SES ENGELİ ÇÖZÜMÜ
+        document.body.addEventListener("click", () => {
+            const m = document.getElementById("music");
+            if (m.muted) {
+                m.muted = false;
+                m.volume = 0.5;
+                m.play();
             }
+        }, {
+            once: true
+        });
+
+        function startLove() {
+            document.getElementById("introBox").classList.add("melt");
+            setTimeout(() => {
+                document.getElementById("intro").style.display = "none";
+                document.getElementById("main").style.display = "block";
+                startRain();
+                setTimeout(() => {
+                    document.getElementById("timerMessage").innerText =
+                        "Seni her geçen saniye daha çok seviyorum 💞";
+                }, 5000);
+            }, 1000);
         }
 
-        function showEnd() {
-            document.body.classList.add("night");
-            document.getElementById("fireworks").style.display = "block";
-            document.getElementById("mainBox").innerHTML =
-                `<div class="final">🌙 Sonsuz Mutlu Son ✨</div>
-   <button onclick="location.reload()">Sayfayı Yenile 🔁</button>`;
+        function meow() {
+            document.getElementById("meowSound").play();
+            level++;
+            document.getElementById("level").innerText = level;
+        }
+
+        function startRain() {
+            setInterval(() => {
+                const h = document.createElement("div");
+                h.className = "rain";
+                h.innerHTML = document.body.classList.contains("dark") ? "✨" : "💖";
+                h.style.left = Math.random() * 100 + "vw";
+                document.body.appendChild(h);
+                setTimeout(() => h.remove(), 4000);
+            }, 400);
+        }
+
+        function openLetter() {
+            document.getElementById("letter").style.display = "block";
+        }
+
+        function toggleDark() {
+            document.body.classList.toggle("dark");
         }
     </script>
 
