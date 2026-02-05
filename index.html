@@ -7,41 +7,32 @@
 
     <style>
          :root {
-            --bg-day: url("https://media.giphy.com/media/l0HlQ7LRalQqdWfao/giphy.gif");
-            --bg-night: url("https://media.giphy.com/media/3o7aD2saalBwwftBIY/giphy.gif");
-            --overlay-day: rgba(255, 215, 230, .65);
-            --overlay-night: rgba(30, 20, 50, .75);
-            --box-day: rgba(255, 255, 255, .92);
-            --box-night: rgba(30, 20, 40, .92);
-            --text-day: #5a2a4a;
-            --text-night: #ffd6f0;
+            --day-bg: url("https://media.giphy.com/media/3o6ZtnFZ9M7E6D0nNS/giphy.gif");
+            --night-bg: #120018;
+            --box-bg: rgba(255, 255, 255, .92);
+            --text: #5a2a4a;
         }
         
         body {
             margin: 0;
             font-family: 'Comic Sans MS', cursive;
-            background: var(--bg-day) no-repeat center/cover fixed;
-            color: var(--text-day);
-            transition: .6s;
+            background: var(--day-bg) no-repeat center/cover fixed;
+            color: var(--text);
+            text-align: center;
+            transition: .8s;
         }
         
         body.night {
-            background: var(--bg-night) no-repeat center/cover fixed;
-            color: var(--text-night);
+            background: var(--night-bg);
+            color: #ffd6f0;
         }
         
-        body::before {
-            content: "";
+        .overlay {
             position: fixed;
             inset: 0;
-            background: var(--overlay-day);
+            background: rgba(255, 200, 220, .6);
             backdrop-filter: blur(2px);
             z-index: -1;
-            transition: .6s;
-        }
-        
-        body.night::before {
-            background: var(--overlay-night);
         }
         
         .fullscreen {
@@ -50,22 +41,17 @@
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            padding-top: 150px;
+            padding-top: 160px;
         }
         
         .box {
-            background: var(--box-day);
+            background: var(--box-bg);
             padding: 45px;
             border-radius: 30px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, .25);
             max-width: 520px;
             width: 90%;
-            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, .25);
             animation: fade 1s;
-        }
-        
-        body.night .box {
-            background: var(--box-night);
         }
         
         @keyframes fade {
@@ -78,162 +64,123 @@
             }
         }
         
-        .melt {
-            opacity: 0;
-            transform: translateY(120px) scale(.8);
-            filter: blur(12px);
-            transition: 1s;
-        }
-        
         button {
             padding: 14px 30px;
             border-radius: 40px;
             border: none;
+            margin: 10px;
             font-size: 18px;
             cursor: pointer;
-            margin: 10px;
             background: linear-gradient(135deg, #ff9eb8, #ffb6c1);
             color: white;
-            transition: .25s;
         }
         
-        button:hover {
-            transform: scale(1.08);
-        }
-        
-        .choice-btn {
-            width: 100%;
-        }
-        
-        .top-bar {
+        .top-cat-box {
             position: fixed;
-            top: 20px;
+            top: 25px;
             left: 50%;
             transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             z-index: 10;
         }
         
         .top-cat {
-            width: 95px;
+            width: 120px;
             cursor: pointer;
         }
         
         .level {
-            font-size: 14px;
-            margin-top: 6px;
+            font-size: 20px;
+            margin-top: 5px;
+            font-weight: bold;
         }
         
-        .toggle {
+        .fireworks {
             position: fixed;
-            top: 25px;
-            right: 25px;
-            font-size: 26px;
-            cursor: pointer;
+            inset: 0;
+            pointer-events: none;
+            background: url("https://media.giphy.com/media/l3vR85PnGsBwu1PFK/giphy.gif") repeat;
+            opacity: .7;
+        }
+        
+        .ending {
+            font-size: 42px;
+            animation: glow 2s infinite alternate;
+        }
+        
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px #ffb6c1;
+            }
+            to {
+                text-shadow: 0 0 25px #fff;
+            }
         }
     </style>
 </head>
 
 <body>
+    <div class="overlay"></div>
 
-    <div class="top-bar">
+    <div class="top-cat-box">
         <img class="top-cat" src="https://media.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif" onclick="catClick()">
         <div class="level" id="levelText">🐾 Sufle – Level 1</div>
     </div>
 
-    <div class="toggle" onclick="toggleMode()">🌙</div>
-
-    <audio id="music" loop muted autoplay>
-  <source src="sounds/music.mp3">
-</audio>
+    <audio id="meow" src="sounds/meow.mp3"></audio>
 
     <script>
-        let level = Number(localStorage.getItem("catLevel")) || 1;
+        let level = Number(localStorage.getItem("level")) || 1;
         document.getElementById("levelText").innerText =
             `🐾 Sufle – Level ${level}`;
 
         function catClick() {
             level++;
-            localStorage.setItem("catLevel", level);
+            localStorage.setItem("level", level);
             document.getElementById("levelText").innerText =
                 `🐾 Sufle – Level ${level}`;
-            new Audio("sounds/meow.mp3").play();
+            const m = document.getElementById("meow");
+            m.currentTime = 0;
+            m.play();
         }
 
-        function toggleMode() {
-            document.body.classList.toggle("night");
-            localStorage.setItem("mode",
-                document.body.classList.contains("night") ? "night" : "day");
-        }
-
-        if (localStorage.getItem("mode") === "night") {
+        if (localStorage.getItem("ending") === "true") {
             document.body.classList.add("night");
-        }
+            document.body.innerHTML += `
+    <div class="fireworks"></div>
+    <div class="fullscreen">
+      <div class="ending">✨ Sonsuz Mutlu Son ✨</div>
+    </div>
+  `;
+            localStorage.removeItem("ending");
+        } else {
+            document.body.innerHTML += `
+  <div class="fullscreen" id="story">
+    <div class="box">
+      <p>
+        Dolunay…<br><br>
+        Bu küçük site sana olan sevgimin  
+        dijital bir hali 💌
+      </p>
+      <button onclick="showChoices()">Devam Et 💖</button>
+    </div>
 
-        document.body.addEventListener("click", () => {
-            const m = document.getElementById("music");
-            if (m.muted) {
-                m.muted = false;
-                m.volume = .5;
-                m.play();
-            }
-        }, {
-            once: true
-        });
-
-        document.body.innerHTML += `
-<div id="intro" class="fullscreen">
-  <div class="box" id="introBox">
-    <h1>Dolunay’ı seviyor musun? 💕</h1>
-    <button onclick="startLove()">💖 Evet 💖</button>
-    <button onclick="startLove()">🥰 Evet 🥰</button>
+    <div class="box" id="choices" style="display:none;">
+      <button onclick="finish()">💗 Böyle olacağını hissediyordum</button>
+      <button onclick="finish()">😄 Sadece flört sanmıştım</button>
+    </div>
   </div>
-</div>
-
-<div id="main" class="fullscreen" style="display:none;">
-  <div class="box">
-    <p>
-      Dolunay…<br><br>
-      Bu site küçük ama hisleri kocaman 💗
-    </p>
-    <button onclick="showStory()">📖 Devam Et</button>
-  </div>
-
-  <div class="box" id="storyBox" style="display:none;">
-    <h3>✨ Hikâye daha yeni başlıyor… ✨</h3>
-    <button class="choice-btn" onclick="choiceOne()">1️⃣ Böyle olacağını düşünüyor muydun?</button>
-    <button class="choice-btn" onclick="choiceTwo()">2️⃣ Sadece flört mü sanıyordun?</button>
-  </div>
-
-  <div class="box" id="resultBox" style="display:none;"></div>
-</div>
-`;
-
-        function startLove() {
-            introBox.classList.add("melt");
-            setTimeout(() => {
-                intro.style.display = "none";
-                main.style.display = "flex";
-            }, 900);
+  `;
         }
 
-        function showStory() {
-            storyBox.style.display = "block";
+        function showChoices() {
+            document.getElementById("choices").style.display = "block";
         }
 
-        function choiceOne() {
-            showResult("Her ne düşündüysen önemi yok… iyi ki beraberiz 💖");
-        }
-
-        function choiceTwo() {
-            showResult("Yok öyle sadece flört 😄<br><br>Artık beraber her şeyde 💕");
-        }
-
-        function showResult(text) {
-            resultBox.style.display = "block";
-            resultBox.innerHTML = `<p>${text}</p>`;
+        function finish() {
+            document.getElementById("story").innerHTML += `
+    <div class="box">🔁 Sayfayı yenile</div>
+  `;
+            localStorage.setItem("ending", "true");
         }
     </script>
 
