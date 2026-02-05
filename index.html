@@ -6,38 +6,66 @@
     <title>Dolunay 💖 Sufle</title>
 
     <style>
+         :root {
+            --bg-day: url("https://media.giphy.com/media/l0HlQ7LRalQqdWfao/giphy.gif");
+            --bg-night: url("https://media.giphy.com/media/3o7aD2saalBwwftBIY/giphy.gif");
+            --overlay-day: rgba(255, 215, 230, .65);
+            --overlay-night: rgba(30, 20, 50, .75);
+            --box-day: rgba(255, 255, 255, .92);
+            --box-night: rgba(30, 20, 40, .92);
+            --text-day: #5a2a4a;
+            --text-night: #ffd6f0;
+        }
+        
         body {
             margin: 0;
             font-family: 'Comic Sans MS', cursive;
-            text-align: center;
-            color: #5a2a4a;
-            background: url("https://media.giphy.com/media/26tn33aiTi1jkl6H6/giphy.gif") no-repeat center/cover fixed;
+            background: var(--bg-day) no-repeat center/cover fixed;
+            color: var(--text-day);
+            transition: .6s;
+        }
+        
+        body.night {
+            background: var(--bg-night) no-repeat center/cover fixed;
+            color: var(--text-night);
         }
         
         body::before {
             content: "";
             position: fixed;
             inset: 0;
-            background: rgba(255, 200, 220, .6);
+            background: var(--overlay-day);
             backdrop-filter: blur(2px);
             z-index: -1;
+            transition: .6s;
+        }
+        
+        body.night::before {
+            background: var(--overlay-night);
         }
         
         .fullscreen {
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
+            padding-top: 150px;
         }
         
         .box {
-            background: rgba(255, 255, 255, .92);
+            background: var(--box-day);
             padding: 45px;
             border-radius: 30px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, .25);
             max-width: 520px;
-            animation: fade 1.2s;
+            width: 90%;
+            text-align: center;
+            animation: fade 1s;
+        }
+        
+        body.night .box {
+            background: var(--box-night);
         }
         
         @keyframes fade {
@@ -73,94 +101,80 @@
             transform: scale(1.08);
         }
         
-        .cat {
-            width: 220px;
-            margin-top: 15px;
-        }
-        
         .choice-btn {
-            display: block;
             width: 100%;
-            margin: 12px auto;
         }
         
-        .ending {
-            font-size: 38px;
-            color: white;
-            animation: glow 2s infinite alternate;
+        .top-bar {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 10;
         }
         
-        @keyframes glow {
-            from {
-                text-shadow: 0 0 10px #ffb6c1;
-            }
-            to {
-                text-shadow: 0 0 25px #fff;
-            }
+        .top-cat {
+            width: 95px;
+            cursor: pointer;
+        }
+        
+        .level {
+            font-size: 14px;
+            margin-top: 6px;
+        }
+        
+        .toggle {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            font-size: 26px;
+            cursor: pointer;
         }
     </style>
 </head>
 
 <body>
 
+    <div class="top-bar">
+        <img class="top-cat" src="https://media.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif" onclick="catClick()">
+        <div class="level" id="levelText">🐾 Sufle – Level 1</div>
+    </div>
+
+    <div class="toggle" onclick="toggleMode()">🌙</div>
+
     <audio id="music" loop muted autoplay>
   <source src="sounds/music.mp3">
 </audio>
 
     <script>
-        const state = localStorage.getItem("endingState");
+        let level = Number(localStorage.getItem("catLevel")) || 1;
+        document.getElementById("levelText").innerText =
+            `🐾 Sufle – Level ${level}`;
 
-        if (state === "ending") {
-            showEnding();
-        } else {
-            showStory();
+        function catClick() {
+            level++;
+            localStorage.setItem("catLevel", level);
+            document.getElementById("levelText").innerText =
+                `🐾 Sufle – Level ${level}`;
+            new Audio("sounds/meow.mp3").play();
         }
 
-        function showEnding() {
-            localStorage.removeItem("endingState");
-            document.body.innerHTML = `
-    <div class="fullscreen">
-      <div class="ending">✨ Sonsuz Mutlu Son ✨</div>
-    </div>
-  `;
+        function toggleMode() {
+            document.body.classList.toggle("night");
+            localStorage.setItem("mode",
+                document.body.classList.contains("night") ? "night" : "day");
         }
 
-        function showStory() {
-            document.body.innerHTML += `
-<div id="intro" class="fullscreen">
-  <div class="box" id="introBox">
-    <h1>Dolunay’ı seviyor musun? 💕</h1>
-    <button onclick="startLove()">💖 Evet 💖</button>
-    <button onclick="startLove()">🥰 Evet 🥰</button>
-  </div>
-</div>
-
-<div id="main" style="display:none;">
-  <h1>💗 Hoş geldin aşkım 💗</h1>
-
-  <div class="box">
-    <p>
-      Dolunay…<br><br>
-      Bu hikâye küçük bir siteyle başladı  
-      ama hisleri kocaman 💖
-    </p>
-    <button onclick="startStory()">📖 Devam Et</button>
-  </div>
-
-  <div class="box" id="storyBox" style="display:none;">
-    <h3>✨ Hikâye daha yeni başlıyor… ✨</h3>
-    <button class="choice-btn" onclick="choiceOne()">1️⃣ İlk tanıştığında böyle olacağını düşünüyor muydun?</button>
-    <button class="choice-btn" onclick="choiceTwo()">2️⃣ Sadece flört ederiz mi diyordun?</button>
-  </div>
-
-  <div class="box" id="resultBox" style="display:none;"></div>
-</div>
-`;
+        if (localStorage.getItem("mode") === "night") {
+            document.body.classList.add("night");
         }
 
         document.body.addEventListener("click", () => {
             const m = document.getElementById("music");
-            if (m && m.muted) {
+            if (m.muted) {
                 m.muted = false;
                 m.volume = .5;
                 m.play();
@@ -169,44 +183,57 @@
             once: true
         });
 
-        function meow() {
-            const sound = new Audio("sounds/meow.mp3");
-            sound.currentTime = 0;
-            sound.play();
-        }
+        document.body.innerHTML += `
+<div id="intro" class="fullscreen">
+  <div class="box" id="introBox">
+    <h1>Dolunay’ı seviyor musun? 💕</h1>
+    <button onclick="startLove()">💖 Evet 💖</button>
+    <button onclick="startLove()">🥰 Evet 🥰</button>
+  </div>
+</div>
+
+<div id="main" class="fullscreen" style="display:none;">
+  <div class="box">
+    <p>
+      Dolunay…<br><br>
+      Bu site küçük ama hisleri kocaman 💗
+    </p>
+    <button onclick="showStory()">📖 Devam Et</button>
+  </div>
+
+  <div class="box" id="storyBox" style="display:none;">
+    <h3>✨ Hikâye daha yeni başlıyor… ✨</h3>
+    <button class="choice-btn" onclick="choiceOne()">1️⃣ Böyle olacağını düşünüyor muydun?</button>
+    <button class="choice-btn" onclick="choiceTwo()">2️⃣ Sadece flört mü sanıyordun?</button>
+  </div>
+
+  <div class="box" id="resultBox" style="display:none;"></div>
+</div>
+`;
 
         function startLove() {
             introBox.classList.add("melt");
             setTimeout(() => {
                 intro.style.display = "none";
-                main.style.display = "block";
+                main.style.display = "flex";
             }, 900);
         }
 
-        function startStory() {
+        function showStory() {
             storyBox.style.display = "block";
         }
 
         function choiceOne() {
-            showResult("Her ne düşündüysen bir önemi yok, iyi ki beraberiz 💖");
+            showResult("Her ne düşündüysen önemi yok… iyi ki beraberiz 💖");
         }
 
         function choiceTwo() {
-            showResult("Yok öyle sadece flört :D<br><br>Artık beraber her şeyde, her durumda 💕");
+            showResult("Yok öyle sadece flört 😄<br><br>Artık beraber her şeyde 💕");
         }
 
         function showResult(text) {
             resultBox.style.display = "block";
-            resultBox.innerHTML = `
-    <p>${text}</p>
-    <img class="cat"
-         src="https://media.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif"
-         onclick="meow()"
-         style="cursor:pointer;">
-    <p><b>Sufle 🐈‍⬛</b></p>
-    <div class="box">🔁 Şimdi sayfayı yenile</div>
-  `;
-            localStorage.setItem("endingState", "ending");
+            resultBox.innerHTML = `<p>${text}</p>`;
         }
     </script>
 
