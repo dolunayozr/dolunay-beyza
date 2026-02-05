@@ -23,38 +23,25 @@
             z-index: -1;
         }
         
-        .fullscreen {
+        #intro {
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-direction: column;
         }
         
         .box {
-            background: rgba(255, 255, 255, .92);
+            background: rgba(255, 255, 255, .9);
             padding: 45px;
             border-radius: 30px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, .25);
-            max-width: 520px;
-            animation: fade 1.2s;
-        }
-        
-        @keyframes fade {
-            from {
-                opacity: 0;
-                transform: scale(.9);
-            }
-            to {
-                opacity: 1;
-            }
+            transition: 1s;
         }
         
         .melt {
             opacity: 0;
             transform: translateY(120px) scale(.8);
             filter: blur(12px);
-            transition: 1s;
         }
         
         button {
@@ -73,30 +60,39 @@
             transform: scale(1.08);
         }
         
+        #main {
+            display: none;
+            padding-top: 30px;
+        }
+        
         .cat {
             width: 220px;
             margin-top: 15px;
+        }
+        
+        .section {
+            background: rgba(255, 255, 255, .92);
+            margin: 30px auto;
+            padding: 30px;
+            max-width: 520px;
+            border-radius: 25px;
+            animation: fade 1s;
+        }
+        
+        @keyframes fade {
+            from {
+                opacity: 0;
+                transform: scale(.9);
+            }
+            to {
+                opacity: 1;
+            }
         }
         
         .choice-btn {
             display: block;
             width: 100%;
             margin: 12px auto;
-        }
-        
-        .ending {
-            font-size: 38px;
-            color: white;
-            animation: glow 2s infinite alternate;
-        }
-        
-        @keyframes glow {
-            from {
-                text-shadow: 0 0 10px #ffb6c1;
-            }
-            to {
-                text-shadow: 0 0 25px #fff;
-            }
         }
     </style>
 </head>
@@ -107,61 +103,37 @@
   <source src="sounds/music.mp3">
 </audio>
 
-    <script>
-        // 🔁 DÖNGÜ KONTROLÜ
-        const state = localStorage.getItem("endingState");
-
-        if (state === "ending") {
-            showEnding();
-        } else {
-            showStory();
-        }
-
-        function showEnding() {
-            localStorage.removeItem("endingState");
-            document.body.innerHTML = `
-    <div class="fullscreen">
-      <div class="ending">✨ Sonsuz Mutlu Son ✨</div>
+    <div id="intro">
+        <div class="box" id="introBox">
+            <h1>Dolunay’ı seviyor musun? 💕</h1>
+            <button onclick="startLove()">💖 Evet 💖</button>
+            <button onclick="startLove()">🥰 Evet 🥰</button>
+        </div>
     </div>
-  `;
-        }
 
-        function showStory() {
-            document.body.innerHTML += `
-<div id="intro" class="fullscreen">
-  <div class="box" id="introBox">
-    <h1>Dolunay’ı seviyor musun? 💕</h1>
-    <button onclick="startLove()">💖 Evet 💖</button>
-    <button onclick="startLove()">🥰 Evet 🥰</button>
-  </div>
-</div>
+    <div id="main">
+        <h1>💗 Hoş geldin aşkım 💗</h1>
 
-<div id="main" style="display:none;">
-  <h1>💗 Hoş geldin aşkım 💗</h1>
+        <div class="section" id="letterSection">
+            <p>
+                Dolunay…<br><br> Bu site küçük ama hislerim kocaman.<br> Seni her geçen gün daha çok seviyorum.<br><br> İyi ki varsın 💖
+            </p>
+            <button onclick="startStory()">📖 Devam Et</button>
+        </div>
 
-  <div class="box">
-    <p>
-      Dolunay…<br><br>
-      Bu hikâye küçük bir siteyle başladı  
-      ama hisleri kocaman 💖
-    </p>
-    <button onclick="startStory()">📖 Devam Et</button>
-  </div>
+        <div class="section" id="storyBox" style="display:none;">
+            <h3>✨ Hikâye daha yeni başlıyor… ✨</h3>
+            <button class="choice-btn" onclick="choiceOne()">1️⃣ Benimle ilk tanıştığında işlerin bu noktaya geleceğini düşünüyor muydun?</button>
+            <button class="choice-btn" onclick="choiceTwo()">2️⃣ Öyle sadece flört eder takılırız mı diyordun?</button>
+        </div>
 
-  <div class="box" id="storyBox" style="display:none;">
-    <h3>✨ Hikâye daha yeni başlıyor… ✨</h3>
-    <button class="choice-btn" onclick="choiceOne()">1️⃣ İlk tanıştığında böyle olacağını düşünüyor muydun?</button>
-    <button class="choice-btn" onclick="choiceTwo()">2️⃣ Sadece flört ederiz mi diyordun?</button>
-  </div>
+        <div class="section" id="resultBox" style="display:none;"></div>
+    </div>
 
-  <div class="box" id="resultBox" style="display:none;"></div>
-</div>
-`;
-        }
-
+    <script>
         document.body.addEventListener("click", () => {
             const m = document.getElementById("music");
-            if (m && m.muted) {
+            if (m.muted) {
                 m.muted = false;
                 m.volume = .5;
                 m.play();
@@ -171,7 +143,7 @@
         });
 
         function startLove() {
-            introBox.classList.add("melt");
+            document.getElementById("introBox").classList.add("melt");
             setTimeout(() => {
                 intro.style.display = "none";
                 main.style.display = "block";
@@ -179,7 +151,7 @@
         }
 
         function startStory() {
-            storyBox.style.display = "block";
+            document.getElementById("storyBox").style.display = "block";
         }
 
         function choiceOne() {
@@ -191,16 +163,13 @@
         }
 
         function showResult(text) {
-            resultBox.style.display = "block";
-            resultBox.innerHTML = `
+            const box = document.getElementById("resultBox");
+            box.style.display = "block";
+            box.innerHTML = `
     <p>${text}</p>
     <img class="cat" src="https://media.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif">
     <p><b>Sufle 🐈‍⬛</b></p>
-    <div class="box">
-      🔁 Şimdi sayfayı yenile
-    </div>
   `;
-            localStorage.setItem("endingState", "ending");
         }
     </script>
 
