@@ -9,235 +9,204 @@
         body {
             margin: 0;
             font-family: 'Comic Sans MS', cursive;
-            color: #5a2a4a;
             text-align: center;
-            overflow-x: hidden;
-            /* GÜNDÜZ PEMBE MANZARA */
-            background: url("https://media.giphy.com/media/3o7TKMt1VVNkHV2PaE/giphy.gif") no-repeat center center fixed;
-            background-size: cover;
-            transition: background 1s ease;
+            color: #5a2a4a;
+            background: url("https://media.giphy.com/media/26tn33aiTi1jkl6H6/giphy.gif") no-repeat center/cover fixed;
         }
-        /* SOFT PEMBE KATMAN */
         
         body::before {
             content: "";
             position: fixed;
             inset: 0;
-            background: rgba(255, 200, 220, 0.55);
+            background: rgba(255, 200, 220, .6);
             backdrop-filter: blur(2px);
             z-index: -1;
-            transition: background 1s ease;
-        }
-        /* 🌙 GECE MODU */
-        
-        body.dark {
-            background: url("https://media.giphy.com/media/l0MYB8Ory7Hqefo9a/giphy.gif") no-repeat center center fixed;
-            background-size: cover;
-            color: #fff;
         }
         
-        body.dark::before {
-            background: rgba(20, 0, 40, 0.65);
-        }
-        /* ORTA KUTU */
-        
-        #intro {
+        .fullscreen {
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
         }
         
-        .intro-box {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 50px 40px;
+        .box {
+            background: rgba(255, 255, 255, .92);
+            padding: 45px;
             border-radius: 30px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
-            transition: all 1s ease;
-        }
-        /* ERİYEREK KAYBOLMA */
-        
-        .melt {
-            animation: meltAway 1s forwards;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, .25);
+            max-width: 520px;
+            animation: fade 1.2s;
         }
         
-        @keyframes meltAway {
-            to {
+        @keyframes fade {
+            from {
                 opacity: 0;
-                transform: scale(0.8) translateY(120px);
-                filter: blur(12px);
+                transform: scale(.9);
+            }
+            to {
+                opacity: 1;
             }
         }
         
-        h1 {
-            font-size: 32px;
-            margin-bottom: 30px;
+        .melt {
+            opacity: 0;
+            transform: translateY(120px) scale(.8);
+            filter: blur(12px);
+            transition: 1s;
         }
         
         button {
-            padding: 15px 35px;
-            font-size: 20px;
+            padding: 14px 30px;
             border-radius: 40px;
             border: none;
+            font-size: 18px;
             cursor: pointer;
+            margin: 10px;
             background: linear-gradient(135deg, #ff9eb8, #ffb6c1);
             color: white;
-            margin: 10px;
-            transition: 0.25s;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            transition: .25s;
         }
         
         button:hover {
             transform: scale(1.08);
         }
         
-        #main {
-            display: none;
-            padding-top: 40px;
-        }
-        
         .cat {
-            width: 200px;
-            cursor: pointer;
-            transition: 0.3s;
+            width: 220px;
+            margin-top: 15px;
         }
         
-        .cat:hover {
-            transform: scale(1.1) rotate(-5deg);
+        .choice-btn {
+            display: block;
+            width: 100%;
+            margin: 12px auto;
         }
         
-        .heart {
-            position: fixed;
-            font-size: 24px;
-            animation: floatUp 2s linear forwards;
+        .ending {
+            font-size: 38px;
+            color: white;
+            animation: glow 2s infinite alternate;
         }
         
-        @keyframes floatUp {
-            to {
-                opacity: 0;
-                transform: translateY(-120px);
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px #ffb6c1;
             }
-        }
-        
-        .rain {
-            position: fixed;
-            top: -30px;
-            font-size: 24px;
-            animation: rain 4s linear infinite;
-        }
-        
-        @keyframes rain {
             to {
-                transform: translateY(110vh);
+                text-shadow: 0 0 25px #fff;
             }
-        }
-        
-        .letter {
-            display: none;
-            background: rgba(255, 255, 255, 0.95);
-            margin: 30px auto;
-            padding: 30px;
-            max-width: 500px;
-            border-radius: 25px;
-        }
-        
-        .toggle {
-            position: fixed;
-            top: 15px;
-            right: 15px;
-            font-size: 22px;
         }
     </style>
 </head>
 
 <body>
 
-    <!-- SESLER -->
     <audio id="music" loop muted autoplay>
-  <source src="sounds/music.mp3" type="audio/mpeg">
+  <source src="sounds/music.mp3">
 </audio>
-    <audio id="meowSound">
-  <source src="sounds/meow.mp3" type="audio/mpeg">
-</audio>
-
-    <!-- GİRİŞ -->
-    <div id="intro">
-        <div class="intro-box" id="introBox">
-            <h1>Dolunay’ı seviyor musun? 💕</h1>
-            <button onclick="startLove()">💖 Evet 💖</button>
-            <button onclick="startLove()">🥰 Evet 🥰</button>
-        </div>
-    </div>
-
-    <!-- ANA -->
-    <div id="main">
-        <h1>💗 Hoş geldin aşkım 💗</h1>
-        <p id="timerMessage"></p>
-
-        <h2>🐈‍⬛ Sufle</h2>
-        <p>Seviye: <span id="level">0</span></p>
-        <img src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" class="cat" onclick="meow()">
-        <p>Adı: <b>Sufle</b> 🐾</p>
-
-        <button onclick="openLetter()">💌 Gizli Aşk Mektubu</button>
-        <div class="letter" id="letter">
-            Dolunay…<br><br> Yıldızlar geceyi güzelleştirir, sen benim hayatımı güzelleştiriyorsun ✨💖
-        </div>
-    </div>
-
-    <button class="toggle" onclick="toggleDark()">🌙</button>
 
     <script>
-        let level = 0;
+        const state = localStorage.getItem("endingState");
 
-        // SES ENGELİ ÇÖZÜMÜ
+        if (state === "ending") {
+            showEnding();
+        } else {
+            showStory();
+        }
+
+        function showEnding() {
+            localStorage.removeItem("endingState");
+            document.body.innerHTML = `
+    <div class="fullscreen">
+      <div class="ending">✨ Sonsuz Mutlu Son ✨</div>
+    </div>
+  `;
+        }
+
+        function showStory() {
+            document.body.innerHTML += `
+<div id="intro" class="fullscreen">
+  <div class="box" id="introBox">
+    <h1>Dolunay’ı seviyor musun? 💕</h1>
+    <button onclick="startLove()">💖 Evet 💖</button>
+    <button onclick="startLove()">🥰 Evet 🥰</button>
+  </div>
+</div>
+
+<div id="main" style="display:none;">
+  <h1>💗 Hoş geldin aşkım 💗</h1>
+
+  <div class="box">
+    <p>
+      Dolunay…<br><br>
+      Bu hikâye küçük bir siteyle başladı  
+      ama hisleri kocaman 💖
+    </p>
+    <button onclick="startStory()">📖 Devam Et</button>
+  </div>
+
+  <div class="box" id="storyBox" style="display:none;">
+    <h3>✨ Hikâye daha yeni başlıyor… ✨</h3>
+    <button class="choice-btn" onclick="choiceOne()">1️⃣ İlk tanıştığında böyle olacağını düşünüyor muydun?</button>
+    <button class="choice-btn" onclick="choiceTwo()">2️⃣ Sadece flört ederiz mi diyordun?</button>
+  </div>
+
+  <div class="box" id="resultBox" style="display:none;"></div>
+</div>
+`;
+        }
+
         document.body.addEventListener("click", () => {
             const m = document.getElementById("music");
-            if (m.muted) {
+            if (m && m.muted) {
                 m.muted = false;
-                m.volume = 0.5;
+                m.volume = .5;
                 m.play();
             }
         }, {
             once: true
         });
 
-        function startLove() {
-            document.getElementById("introBox").classList.add("melt");
-            setTimeout(() => {
-                document.getElementById("intro").style.display = "none";
-                document.getElementById("main").style.display = "block";
-                startRain();
-                setTimeout(() => {
-                    document.getElementById("timerMessage").innerText =
-                        "Seni her geçen saniye daha çok seviyorum 💞";
-                }, 5000);
-            }, 1000);
-        }
-
         function meow() {
-            document.getElementById("meowSound").play();
-            level++;
-            document.getElementById("level").innerText = level;
+            const sound = new Audio("sounds/meow.mp3");
+            sound.currentTime = 0;
+            sound.play();
         }
 
-        function startRain() {
-            setInterval(() => {
-                const h = document.createElement("div");
-                h.className = "rain";
-                h.innerHTML = document.body.classList.contains("dark") ? "✨" : "💖";
-                h.style.left = Math.random() * 100 + "vw";
-                document.body.appendChild(h);
-                setTimeout(() => h.remove(), 4000);
-            }, 400);
+        function startLove() {
+            introBox.classList.add("melt");
+            setTimeout(() => {
+                intro.style.display = "none";
+                main.style.display = "block";
+            }, 900);
         }
 
-        function openLetter() {
-            document.getElementById("letter").style.display = "block";
+        function startStory() {
+            storyBox.style.display = "block";
         }
 
-        function toggleDark() {
-            document.body.classList.toggle("dark");
+        function choiceOne() {
+            showResult("Her ne düşündüysen bir önemi yok, iyi ki beraberiz 💖");
+        }
+
+        function choiceTwo() {
+            showResult("Yok öyle sadece flört :D<br><br>Artık beraber her şeyde, her durumda 💕");
+        }
+
+        function showResult(text) {
+            resultBox.style.display = "block";
+            resultBox.innerHTML = `
+    <p>${text}</p>
+    <img class="cat"
+         src="https://media.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif"
+         onclick="meow()"
+         style="cursor:pointer;">
+    <p><b>Sufle 🐈‍⬛</b></p>
+    <div class="box">🔁 Şimdi sayfayı yenile</div>
+  `;
+            localStorage.setItem("endingState", "ending");
         }
     </script>
 
